@@ -112,7 +112,7 @@ app.use(bodyParser.json());
 //     console.log("Db connected successfully")
 
 // Setup server port
-var port = process.env.PORT || 3009;
+var port = process.env.PORT || 3002;
 app.use("/", router);
 app.use(cors());
 

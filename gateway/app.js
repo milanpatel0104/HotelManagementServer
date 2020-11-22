@@ -17,47 +17,17 @@ var router = express.Router();
 var urllib = require("urllib");
 const { resolve } = require("path");
 router.use(function (req, res, next) {
-  console.log("req", req.originalUrl);
-  var net = require("net");
-  var hosts = [["localhost", 3002]];
-  hosts.forEach(function (item) {
-    var sock = new net.Socket();
-    // sock.setTimeout(2500);
-    sock
-      .on("connect", async function () {  try {
-        console.log(2);
-        var urllib = require("urllib");
-
-        const data = await new Promise((resolve, reject) => {
-          urllib.request(
-            `http://localhost:3004${req.originalUrl}`,
-            { method: req.method, data: req.body },
-            function (err, data, res) {
-              if (err) {
-                console.log("err");
-                reject(err);
-              }
-              resolve(JSON.parse(data.toString()));
-            }
-          );
-        });
-        console.log(1234, data);
-        if (data) {
-          console.log("IN");
-          return res.send(data);
-        }
-      } catch (error) {
-        console.log("error", error);
-        return res.status(500).send(error);
-      }
-        sock.destroy();
-      })
-      .on("error", async function (e) {
-        try {
+  try{
+    console.log("req", req.originalUrl);
+    var net = require("net");
+    var hosts = [["localhost", 3002]];
+    hosts.forEach(function (item) {
+      var sock = new net.Socket();
+      // sock.setTimeout(2500);
+      sock
+        .on("connect", async function () {  try {
           console.log(2);
-          var urllib = require("urllib");
-          console.log("BODY",req.body)
-
+  
           const data = await new Promise((resolve, reject) => {
             urllib.request(
               `http://localhost:3004${req.originalUrl}`,
@@ -71,22 +41,56 @@ router.use(function (req, res, next) {
               }
             );
           });
-        //   console.log(1234, data);
+          console.log(1234, data);
           if (data) {
             console.log("IN");
             return res.send(data);
           }
         } catch (error) {
           console.log("error", error);
-        return res.status(500).send(error);
-
+          return res.status(500).send(error);
         }
-      })
-      .on("timeout", function (e) {
-        console.log(item[0] + ":" + item[1] + " is down: timeout");
-      })
-      .connect(item[1], item[0]);
-  });
+          sock.destroy();
+        })
+        .on("error", async function (e) {
+          try {
+            console.log(2);
+            console.log("BODY",req.body)
+  
+            const data = await new Promise((resolve, reject) => {
+              urllib.request(
+                `http://localhost:3004${req.originalUrl}`,
+                { method: req.method, data: req.body },
+                function (err, data, res) {
+                  if (err) {
+                    console.log("err");
+                    reject(err);
+                  }
+                  resolve(JSON.parse(data.toString()));
+                }
+              );
+            });
+          //   console.log(1234, data);
+            if (data) {
+              console.log("IN");
+              return res.send(data);
+            }
+          } catch (error) {
+            console.log("error", error);
+          return res.status(500).send(error);
+  
+          }
+        })
+        .on("timeout", function (e) {
+          console.log(item[0] + ":" + item[1] + " is down: timeout");
+        })
+        .connect(item[1], item[0]);
+    });
+  }
+  catch(error){
+    console.log(error)
+  }
+  
   //   next();
 });
 // Import routes

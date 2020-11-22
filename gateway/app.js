@@ -20,7 +20,7 @@ router.use(function (req, res, next) {
   try{
     console.log("req", req.originalUrl);
     var net = require("net");
-    var hosts = [["localhost", 3002]];
+    var hosts = [["localhost", 3003]];
     hosts.forEach(function (item) {
       var sock = new net.Socket();
       // sock.setTimeout(2500);
@@ -30,7 +30,7 @@ router.use(function (req, res, next) {
   
           const data = await new Promise((resolve, reject) => {
             urllib.request(
-              `http://localhost:3004${req.originalUrl}`,
+              `http://localhost:3003${req.originalUrl}`,
               { method: req.method, data: req.body },
               function (err, data, res) {
                 if (err) {

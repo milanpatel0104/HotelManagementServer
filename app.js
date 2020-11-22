@@ -34,7 +34,7 @@ if (!db) console.log("Error connecting db");
 else console.log("Db connected successfully");
 
 // Setup server port
-const port = process.env.PORT || 3004;
+const port = process.env.PORT || 3002;
 
 console.log("Pro", process.env);
 app.use(cors());
